@@ -1,4 +1,4 @@
-Here’s the formatted version for a GitHub file:
+
 
 ```markdown
 # AWS Networking and Compute Basics
