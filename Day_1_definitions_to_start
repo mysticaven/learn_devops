@@ -1,0 +1,121 @@
+1. Subnet
+A subnet is a range of IP addresses within a Virtual Private Cloud (VPC). Subnets are used to divide a VPC into smaller segments. Each subnet is associated with a specific availability zone (a single data center within an AWS region).
+
+Public Subnet: Has a route to an internet gateway, allowing resources within it to be accessed from the internet.
+Private Subnet: Lacks a direct route to the internet, isolating resources from public access.
+Subnets help segregate resources to improve security and manageability.
+2. VPC (Virtual Private Cloud)
+A VPC is a logically isolated network within AWS. It allows you to launch resources (like EC2 instances, RDS databases) in a customizable virtual network. You can:
+
+Define your own IP address range using CIDR.
+Create subnets.
+Configure route tables, gateways, and security rules.
+It gives full control over the network environment, enabling secure and flexible architectures.
+3. CIDR (Classless Inter-Domain Routing)
+CIDR defines IP address ranges in a more efficient way than traditional classes. A CIDR block specifies an IP range using a combination of IP address and prefix length.
+
+Example: 10.0.0.0/16
+10.0.0.0 is the base IP.
+/16 means the first 16 bits are for the network part, leaving the rest for host addresses.
+CIDR is used in VPCs to allocate private IP ranges.
+4. IP Address
+An IP address is a unique identifier for a device on a network. AWS assigns:
+
+Private IPs: For communication within a VPC (not accessible from the internet).
+Public IPs: For resources needing internet access.
+AWS also offers Elastic IPs, which are static public IPs you can allocate and attach to resources.
+5. Route
+A route is a rule that determines where network traffic is directed. For example:
+
+Traffic destined for 0.0.0.0/0 (all addresses) is routed to an internet gateway for public access.
+Routes are defined in route tables.
+6. Route Table
+A route table is a set of rules (routes) that determine the traffic flow in a VPC.
+
+Each subnet must be associated with a route table.
+A default route table is created for a VPC.
+Example Rules:
+Route traffic to local VPC subnets.
+Route internet traffic to an internet gateway.
+7. Gateway
+A gateway provides a connection between your VPC and another network (e.g., the internet or on-premises networks).
+Types of gateways:
+
+Internet Gateway (IGW): Enables internet access for resources in a public subnet.
+NAT Gateway: Allows private subnet resources to access the internet (e.g., for software updates) without exposing them to inbound traffic.
+Virtual Private Gateway: Connects a VPC to an on-premises network via VPN.
+8. NAT (Network Address Translation)
+A NAT Gateway or NAT Instance allows instances in private subnets to access the internet for tasks like software updates while preventing inbound internet traffic.
+
+NAT Gateway: Fully managed, scalable service.
+NAT Instance: A manually managed EC2 instance configured for NAT.
+9. Security Group
+A security group acts as a virtual firewall for AWS resources like EC2 instances, controlling inbound and outbound traffic.
+
+Stateful: If traffic is allowed in, the response is automatically allowed out.
+Rules define protocols (e.g., HTTP, SSH), ports, and allowed IPs.
+Example: Allow inbound SSH traffic from 203.0.113.0/24.
+10. NACL (Network Access Control List)
+A Network Access Control List (NACL) is an additional security layer at the subnet level.
+
+Stateless: Each direction (inbound/outbound) must be explicitly allowed.
+Rules: Numbered and processed in order; the first match determines the action (allow/deny).
+Example: Block traffic from a malicious IP range.
+11. Peering Connection
+A VPC peering connection establishes a direct, private connection between two VPCs.
+
+Traffic stays within AWS’s private network, ensuring low latency and security.
+Useful for sharing resources across VPCs in the same or different accounts.
+12. Transitive Peering
+Transitive peering refers to routing traffic between two VPCs through a third, peered VPC. AWS does not support transitive routing natively. To enable transitive-like connections:
+
+Use Transit Gateway: A fully managed service to connect multiple VPCs and on-premises networks.
+Create separate peering connections for direct VPC communication.
+Additional Key Concepts:
+Elastic IP (EIP): A static, public IP address that can be assigned to AWS resources. It allows consistent IP use even if the instance is stopped and restarted.
+
+Transit Gateway: A centralized hub for connecting multiple VPCs, on-premises networks, and VPNs. It simplifies network management for large-scale architectures.
+
+VPN (Virtual Private Network): Connects your on-premises network securely to your VPC.
+
+Direct Connect: Provides a dedicated physical connection from your on-premises network to AWS for consistent and high-speed data transfer.
+
+ DHCP (Dynamic Host Configuration Protocol)
+What it is: DHCP is a network management protocol that automatically assigns IP addresses and other network configurations (like DNS server addresses, default gateways) to devices on a network.
+In AWS:
+AWS automatically provides DHCP services for resources in a VPC.
+You can configure a DHCP options set to specify the domain name and DNS servers for your VPC.
+Example use: Assigning private IPs to instances in a subnet.
+2. DNS (Domain Name System)
+What it is: DNS translates human-readable domain names (e.g., example.com) into IP addresses (e.g., 192.0.2.1) so computers can communicate.
+In AWS:
+DNS is managed by Amazon Route 53, a scalable and highly available DNS service.
+Every VPC has an internal DNS resolver to translate domain names to IPs within the VPC.
+Public and private hosted zones can be used to manage DNS records for internet-facing and internal domains.
+Key Features:
+Route traffic using custom domain names.
+Configure DNS failover and load balancing.
+3. DNS Gateway
+What it is: This term generally refers to a DNS resolver or service that acts as a "gateway" to process DNS queries.
+In AWS:
+A VPC has a built-in DNS resolver (at the default IP 169.254.169.253) that enables resources to resolve domain names.
+For custom configurations, Route 53 Resolver provides DNS forwarding between on-premises networks and AWS.
+4. EC2 (Elastic Compute Cloud)
+What it is: EC2 is a core AWS service that provides resizable virtual servers (instances) in the cloud. It allows users to run applications, host websites, and perform computing tasks with customizable resources.
+Key Features:
+Instance Types: EC2 instances come in various types optimized for compute, memory, storage, or networking.
+Auto Scaling: Automatically adjusts the number of instances based on demand.
+Elastic Load Balancing: Distributes traffic across multiple EC2 instances.
+AMI (Amazon Machine Images): Pre-configured templates for launching instances with operating systems and applications.
+Networking with EC2:
+Each EC2 instance is launched in a VPC and assigned an IP address (private or public).
+Security Groups and NACLs are used to control traffic.
+Elastic IPs provide a persistent public IP for an instance.
+Storage: EC2 instances typically use Elastic Block Store (EBS) volumes for persistent storage or Instance Store for ephemeral storage.
+Summary
+AWS integrates these networking and compute concepts seamlessly:
+
+DHCP dynamically assigns IPs in VPCs.
+DNS handles domain name resolution using Route 53 and VPC’s internal resolver.
+DNS Gateway refers to mechanisms like Route 53 Resolver for forwarding or resolving domain queries.
+EC2 provides scalable, on-demand compute instances that rely on these networking services for efficient operation.
